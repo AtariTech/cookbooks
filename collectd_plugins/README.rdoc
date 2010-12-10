@@ -20,6 +20,11 @@ A number of recipes for standard plugins are available:
 
 It is recommended to always enable the first two (rrdtool and syslog), but the others are entirely optional. For convenience, the +collectd_plugins+ default recipe will include all of these.
 
+== Redis:
+
+A plugin to monitor Redis[http://redis.io/] is included as collectd_plugins::redis. This recipe requires that you be using our redis cookbook[https://github.com/AtariTech/cookbooks/tree/master/redis]
+for your servers, but can be trivially modified to look for a different recipe or role name.
+
 = LICENSE & AUTHOR:
 
 Author:: Noah Kantrowitz (<nkantrowitz@crypticstudios.com>)
