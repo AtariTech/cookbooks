@@ -22,7 +22,7 @@ define :collectd_plugin, :options => {}, :template => nil, :cookbook => nil do
     owner "root"
     group "root"
     mode "644"
-    if params[:template].blank?
+    if !params[:template].nil? && !params[:template].empty?
       source "plugin.conf.erb"
       cookbook params[:cookbook] || "collectd"
     else
