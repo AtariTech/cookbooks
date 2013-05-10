@@ -19,7 +19,16 @@
 
 package "redis" do
   package_name "redis-server"
+  version node[:redis][:version] if node[:redis][:version]
   action :install
+end
+
+directory node[:redis][:db_path] do 
+  owner "redis"
+  group "redis"
+  mode 0755
+  action :create
+  recursive true
 end
 
 service "redis" do
