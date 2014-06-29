@@ -20,6 +20,12 @@
 include_recipe "collectd"
 include_recipe "apache2"
 
+%w{libjson-perl libhtml-entities-numbered-perl libhtml-parser-perl librrds-perl}.each do |pkg|
+  package pkg do
+    action :install
+  end
+end
+
 directory node[:collectd][:collectd_web][:path] do
   owner "root"
   group "root"
