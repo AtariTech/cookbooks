@@ -34,10 +34,10 @@ define :collectd_plugin, :options => {}, :template => nil, :cookbook => nil do
   end
 end
 
-define :collectd_python_plugin, :options => {}, :module => nil, :path => nil do
+define :collectd_python_plugin, :options => {}, :mod => nil, :path => nil do
   begin
     t = resources(:template => "/etc/collectd/plugins/python.conf")
-  rescue ArgumentError
+  rescue Chef::Exceptions::ResourceNotFound
     collectd_plugin "python" do
       options :paths=>[node[:collectd][:plugin_dir]], :modules=>{}
       template "python_plugin.conf.erb"
@@ -48,5 +48,22 @@ define :collectd_python_plugin, :options => {}, :module => nil, :path => nil do
   if not params[:path].blank?
     t.variables[:options][:paths] << params[:path]
   end
-  t.variables[:options][:modules][params[:module] || params[:name]] = params[:options]
+  t.variables[:options][:modules][params[:mod] || params[:name]] = params[:options]
+end
+
+define :collectd_perl_plugin, :options => {}, :mod => nil, :include_dir => nil do
+  begin
+    t = resources(:template => "/etc/collectd/plugins/perl.conf")
+  rescue Chef::Exceptions::ResourceNotFound
+    collectd_plugin "perl" do
+      options :include_dir=>[node[:collectd][:perl_include_dir]], :modules=>{}
+      template "perl_plugin.conf.erb"
+      cookbook "collectd"
+    end
+    retry
+  end
+  if not params[:include_dir].nil?
+    t.variables[:options][:include_dir] << params[:include_dir]
+  end
+  t.variables[:options][:modules][params[:mod] || params[:name]] = params[:options]
 end
